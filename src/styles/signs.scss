@@ -1,4 +1,5 @@
 // signs.scss — src/styles/
+@use "sass:color";
 
 $green: #1e6e2e;
 $green-mid: #2d6035;
@@ -344,7 +345,7 @@ $ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 //     transition: background 0.2s;
 
 //     &:hover {
-//         background: darken($bg, 6%);
+//         background: color.scale($bg, $lightness: -6%);
 //     }
 // }
 
@@ -384,7 +385,7 @@ $ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
     transition: background 0.2s;
 
     &:hover {
-        background: darken(#f4f5f7, 6%);
+        background: color.scale(#f4f5f7, $lightness: -6%);
     }
 }
 
