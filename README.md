@@ -8,7 +8,10 @@
   <img width="220" alt="Route Planner" src="https://github.com/user-attachments/assets/39c43172-a816-4bac-b0d3-6c1b97dca893" />
   <img width="220" alt="Signs Guide" src="https://github.com/user-attachments/assets/7b785213-d438-4709-b96b-96baaac12fdf" />
   <img width="220" alt="Profile" src="https://github.com/user-attachments/assets/077346cc-4ad8-4d3e-90a6-998b6e8ea644" />
+  <img width="220" alt="Start Route To Rank" src="https://github.com/user-attachments/assets/664cf137-eeaf-484d-8b3f-5ecc91cdb8d8" />
+  <img width="220" alt="Rank Details" src="https://github.com/user-attachments/assets/bf76d7fc-3613-4592-92cd-7760edcb8a61" />
 </p>
+
 
 
 <p align="center">
