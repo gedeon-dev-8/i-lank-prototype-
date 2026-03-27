@@ -1,0 +1,152 @@
+// onboarding.scss — place in src/screens/ alongside OnboardingScreen.jsx
+
+$green:        #1e6e2e;
+$green-mid:    #2d6035;
+$yellow:       #f5c518;
+$text:         #1a1a1a;
+$muted:        #888888;
+$white:        #ffffff;
+$dot-inactive: #c8d8c8;
+
+$ease-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+$ease-back:    cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ── Root ───────────────────────────────────────────────
+.onboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: $white;
+}
+
+// ── Hero ───────────────────────────────────────────────
+.onboard__hero {
+  position: relative;
+  width: 100%;
+  height: 56%;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.onboard__blob {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.onboard__illustration {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px 40px;
+  animation: illustrationIn 0.5s $ease-back both;
+}
+
+@keyframes illustrationIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.94); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+// ── Illustration image ─────────────────────────────────
+// Replaces .onboard__svg — same sizing, works for any format
+.onboard__img {
+  width: 100%;
+  max-width: 460px;  //230px;
+  max-height: 400px; //200px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.18));
+}
+
+// ── Body ───────────────────────────────────────────────
+.onboard__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 28px 32px;
+}
+
+.onboard__text {
+  animation: textIn 0.45s $ease-expo 0.08s both;
+}
+
+@keyframes textIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.onboard__title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: $text;
+  line-height: 1.25;
+  margin-bottom: 10px;
+}
+
+.onboard__desc {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: $muted;
+  line-height: 1.65;
+  max-width: 280px;
+}
+
+// ── Footer ─────────────────────────────────────────────
+.onboard__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.onboard__dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.onboard__dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 4px;
+  background: $dot-inactive;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.35s $ease-expo, background 0.3s ease;
+
+  &--active {
+    background: $green-mid;
+    width: 24px;
+  }
+}
+
+.onboard__arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: $green-mid;
+  color: $white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(45, 96, 53, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+
+  &:hover {
+    transform: scale(1.08);
+    background: $green;
+    box-shadow: 0 12px 28px rgba(45, 96, 53, 0.45);
+  }
+
+  &:active { transform: scale(0.96); }
+}

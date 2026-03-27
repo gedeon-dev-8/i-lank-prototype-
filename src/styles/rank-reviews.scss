@@ -1,0 +1,457 @@
+// rank-reviews.scss — src/styles/
+@use 'sass:color';
+
+$green: #1e6e2e;
+$green-mid: #2d6035;
+$yellow: #f5c518;
+$text: #1a1a1a;
+$muted: #888888;
+$white: #ffffff;
+$bg: #f7f8f8;
+$border: #eeeeee;
+
+$status-bar-h: 50px;
+$ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ── Root ───────────────────────────────────────────────
+.rvw {
+    position: absolute;
+    inset: 0;
+    background: $white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0;
+    z-index: 30;
+    transform: translateX(100%);
+    transition: transform 0.42s $ease-expo;
+
+    &--in {
+        transform: translateX(0);
+    }
+}
+
+.rvw__status-cover {
+    height: $status-bar-h;
+    background: $white;
+    flex-shrink: 0;
+}
+
+// ── Header ─────────────────────────────────────────────
+// .rvw__header {
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+//     padding: 4px 20px 14px;
+//     background: #ffffff;
+//     flex-shrink: 0;
+//     border-bottom: 1px solid #eeeeee;
+// }
+
+// .rvw__back {
+//     width: 32px;
+//     height: 32px;
+//     border-radius: 50%;
+//     border: none;
+//     background: $bg;
+//     color: $text;
+//     font-size: 13px;
+//     cursor: pointer;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     flex-shrink: 0;
+//     transition: background 0.2s;
+
+//     &:hover {
+//         background: darken($bg, 6%);
+//     }
+// }
+
+// .rvw__title {
+//     font-family: 'Poppins', sans-serif;
+//     font-size: 17px;
+//     font-weight: 700;
+//     color: $text;
+//     flex: 1;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+// }
+
+.rvw__header {
+    display: flex;
+    align-items: center;
+    gap: 12px; // gap between back button and title
+    padding: 4px 20px 14px;
+    background: #ffffff;
+    flex-shrink: 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.rvw__back {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f4f5f7;
+    color: #1a1a1a;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; // never shrink the button
+    transition: background 0.2s;
+
+    &:hover {
+        //background: darken(#f4f5f7, 6%);
+        background: color.scale(#f4f5f7, $lightness: -6%);
+    }
+}
+
+.rvw__title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    // NO flex:1, NO text-align — title is left-aligned after the button
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 auto 0 13%; //NB: this margin pushes the title right, creating space for the back button, while still allowing it to truncate with ellipsis if too long
+}
+
+// ── Scrollable body ────────────────────────────────────
+.rvw__body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding: 20px 20px 0;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &--form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+// ── Reviews heading ────────────────────────────────────
+.rvw__reviews-heading {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: $text;
+    margin-bottom: 20px;
+}
+
+// ── Rating summary ─────────────────────────────────────
+.rvw__summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid $border;
+}
+
+.rvw__summary-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    min-width: 60px;
+}
+
+.rvw__big-num {
+    font-family: 'Poppins', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: $text;
+    line-height: 1;
+}
+
+.rvw__out-of {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    margin-top: 4px;
+}
+
+.rvw__bars {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.rvw__bar-row {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.rvw__bar-star {
+    font-size: 9px;
+    color: #e0e0e0;
+
+    &--filled {
+        color: $yellow;
+    }
+}
+
+.rvw__bar-track {
+    flex: 1;
+    height: 7px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-left: 4px;
+}
+
+.rvw__bar-fill {
+    height: 100%;
+    background: $yellow;
+    border-radius: 4px;
+    transition: width 0.6s $ease-expo 0.1s;
+}
+
+.rvw__count-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.rvw__ratings-count {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    white-space: nowrap;
+    text-align: right;
+}
+
+// ── Review cards ───────────────────────────────────────
+.rvw__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.rvw__card {
+    padding: 16px 0;
+    border-bottom: 1px solid $border;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.rvw__card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.rvw__card-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rvw__card-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: $text;
+}
+
+.rvw__card-ago {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+}
+
+.rvw__card-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: $muted;
+    line-height: 1.6;
+}
+
+// ── Stars (shared) ─────────────────────────────────────
+.rvw__stars {
+    display: flex;
+    gap: 3px;
+}
+
+.rvw__star {
+    color: #e0e0e0;
+    transition: color 0.15s, transform 0.1s;
+
+    &--filled {
+        color: $yellow;
+    }
+}
+
+// ── Avatar ─────────────────────────────────────────────
+.rvw__avatar {
+    border-radius: 50%;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+// ── Footer CTA ─────────────────────────────────────────
+.rvw__footer {
+    padding: 14px 20px 24px;
+    background: $white;
+    border-top: 1px solid $border;
+    flex-shrink: 0;
+}
+
+.rvw__footer-btn {
+    width: 100%;
+    padding: 16px;
+    background: $green;
+    color: $white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(30, 110, 46, 0.28);
+    transition: background 0.2s, transform 0.15s;
+
+    &:hover {
+        background: $green-mid;
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+// ── Rate form ──────────────────────────────────────────
+.rvw__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 20px;
+    text-align: center;
+}
+
+.rvw__form-avatar {
+
+    // avatar already sized via inline style
+    .rvw__form-avatar-img {
+        width: 72px;
+        height: 72px;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+    }
+}
+
+.rvw__form-question {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    color: $text;
+    line-height: 1.55;
+    max-width: 280px;
+
+    strong {
+        font-weight: 700;
+    }
+}
+
+.rvw__form-stars {
+    .rvw__star {
+        cursor: pointer;
+        font-size: 40px;
+
+        &:hover {
+            transform: scale(1.15);
+        }
+
+        &--filled {
+            color: $yellow;
+        }
+    }
+
+    .rvw__stars {
+        gap: 8px;
+    }
+}
+
+.rvw__form-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid $border;
+    border-radius: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: $text;
+    background: $bg;
+    outline: none;
+    resize: none;
+    line-height: 1.55;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &::placeholder {
+        color: #c0c0c0;
+    }
+
+    &:focus {
+        border-color: $green;
+        background: $white;
+        box-shadow: 0 0 0 3px rgba(30, 110, 46, 0.1);
+    }
+}
+
+.rvw__form-submit {
+    width: 100%;
+    padding: 16px;
+    background: $green;
+    color: $white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(30, 110, 46, 0.28);
+    transition: background 0.2s, transform 0.15s, opacity 0.2s;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    &:not(:disabled):hover {
+        background: $green-mid;
+        transform: translateY(-1px);
+    }
+
+    &--done {
+        //background: darken($green, 10%);
+        background: color.adjust($green, $lightness: -10%);
+    }
+}

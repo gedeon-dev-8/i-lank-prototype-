@@ -1,0 +1,609 @@
+// signs.scss — src/styles/
+
+$green: #1e6e2e;
+$green-mid: #2d6035;
+$green-bg: #e8f5e9;
+$green-lite: #f0f8f1;
+$text: #1a1a1a;
+$muted: #888888;
+$white: #ffffff;
+$bg: #f4f5f7;
+$border: #eeeeee;
+
+$status-bar-h: 50px;
+$ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+// ══════════════════════════════════════════════════════
+// SIGNS LIST SCREEN
+// ══════════════════════════════════════════════════════
+.signs {
+    position: absolute;
+    inset: 0;
+    background: $white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0;
+    z-index: 30;
+    transform: translateX(100%);
+    transition: transform 0.42s $ease-expo;
+
+    &--in {
+        transform: translateX(0);
+    }
+}
+
+.signs__status-cover {
+    height: $status-bar-h;
+    background: $white;
+    flex-shrink: 0;
+}
+
+// ── Header ─────────────────────────────────────────────
+// .signs__header {
+//     display: flex;
+//     align-items: center;
+//     gap: 12px;
+//     padding: 4px 20px 14px;
+//     background: $white;
+//     flex-shrink: 0;
+//     border-bottom: 1px solid $border;
+// }
+
+// .signs__close {
+//     width: 32px;
+//     height: 32px;
+//     border-radius: 50%;
+//     border: none;
+//     background: $bg;
+//     color: $text;
+//     font-size: 13px;
+//     cursor: pointer;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     flex-shrink: 0;
+//     transition: background 0.2s;
+
+//     &:hover {
+//         background: darken($bg, 6%);
+//     }
+// }
+
+// .signs__title {
+//     font-family: 'Poppins', sans-serif;
+//     font-size: 17px;
+//     font-weight: 700;
+//     color: $text;
+// }
+
+.signs__header {
+    display: flex;
+    align-items: center;
+    padding: 4px 20px 14px;
+    background: #ffffff;
+    flex-shrink: 0;
+    border-bottom: 1px solid #eeeeee;
+    gap: 0; // no gap — spacer handles symmetry
+}
+
+.signs__close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f4f5f7;
+    color: #1a1a1a;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s;
+
+    &:hover {
+        background: darken(#f4f5f7, 6%);
+    }
+}
+
+.signs__title {
+    flex: 1; // fills remaining space
+    text-align: center; // centres text within that space
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 8px; // breathing room from buttons
+}
+
+// Invisible spacer — mirrors .signs__close width so title is truly centred
+.signs__header::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+// ── Body ───────────────────────────────────────────────
+.signs__body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding: 16px 20px 0;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+// ── Pro tip ────────────────────────────────────────────
+.signs__protip {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: $green-lite;
+    border: 1.5px solid $green-bg;
+    border-radius: 16px;
+    margin-bottom: 16px;
+}
+
+.signs__protip-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $green-bg;
+    color: $green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.signs__protip-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.signs__protip-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: $green;
+}
+
+.signs__protip-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    line-height: 1.55;
+}
+
+.signs__protip-close {
+    background: none;
+    border: none;
+    color: $muted;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px;
+    flex-shrink: 0;
+
+    &:hover {
+        color: $text;
+    }
+}
+
+// ── Sign list ──────────────────────────────────────────
+.signs__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.signs__card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    background: none;
+    border: none;
+    border-bottom: 1px solid $border;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    opacity: 0;
+    animation: signCardIn 0.35s $ease-expo forwards;
+    transition: background 0.15s;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &:hover {
+        background: #fafafa;
+    }
+}
+
+@keyframes signCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.signs__card-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    background: $green-lite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.sign__hand-svg {
+    width: 52px;
+    height: 52px;
+}
+
+.signs__card-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.signs__card-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: $text;
+}
+
+.signs__card-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    line-height: 1.4;
+}
+
+.signs__card-arrow {
+    color: #ccc;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+// ══════════════════════════════════════════════════════
+// SIGN DETAIL SCREEN
+// ══════════════════════════════════════════════════════
+.sign-detail {
+    position: absolute;
+    inset: 0;
+    background: $white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0;
+    z-index: 10;
+    transform: translateX(100%);
+    transition: transform 0.4s $ease-expo;
+
+    &--in {
+        transform: translateX(0);
+    }
+}
+
+.sign-detail__status-cover {
+    height: $status-bar-h;
+    background: $white;
+    flex-shrink: 0;
+}
+
+// ── Header ─────────────────────────────────────────────
+// .sign-detail__header {
+//     display: flex;
+//     align-items: center;
+//     gap: 12px;
+//     padding: 4px 20px 14px;
+//     background: $white;
+//     flex-shrink: 0;
+//     border-bottom: 1px solid $border;
+// }
+
+// .sign-detail__back {
+//     width: 32px;
+//     height: 32px;
+//     border-radius: 50%;
+//     border: none;
+//     background: $bg;
+//     color: $text;
+//     font-size: 13px;
+//     cursor: pointer;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     flex-shrink: 0;
+//     transition: background 0.2s;
+
+//     &:hover {
+//         background: darken($bg, 6%);
+//     }
+// }
+
+// .sign-detail__title {
+//     font-family: 'Poppins', sans-serif;
+//     font-size: 17px;
+//     font-weight: 700;
+//     color: $text;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+// }
+
+.sign-detail__header {
+    display: flex;
+    align-items: center;
+    padding: 4px 20px 14px;
+    background: #ffffff;
+    flex-shrink: 0;
+    border-bottom: 1px solid #eeeeee;
+    gap: 0;
+}
+
+.sign-detail__back {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f4f5f7;
+    color: #1a1a1a;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s;
+
+    &:hover {
+        background: darken(#f4f5f7, 6%);
+    }
+}
+
+.sign-detail__title {
+    flex: 1;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 8px;
+}
+
+// Invisible spacer mirrors back button width
+.sign-detail__header::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+// ── Body ───────────────────────────────────────────────
+.sign-detail__body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding: 20px 20px 0;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+// ── Hero card ──────────────────────────────────────────
+.sign-detail__hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: $white;
+    border: 1.5px solid $border;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.sign-detail__hero-img {
+    width: 72px;
+    height: 72px;
+    border-radius: 14px;
+    background: $green-lite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.sign-detail__hero-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sign-detail__hero-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: $text;
+}
+
+.sign-detail__hero-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    line-height: 1.45;
+}
+
+// ── Sections ───────────────────────────────────────────
+.sign-detail__section {
+    margin-bottom: 22px;
+}
+
+.sign-detail__section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: $text;
+    margin-bottom: 14px;
+}
+
+// ── How-to steps ───────────────────────────────────────
+.sign-detail__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.sign-detail__step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.sign-detail__step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: $green-bg;
+    color: $green;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.sign-detail__step-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-top: 2px;
+}
+
+.sign-detail__step-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: $text;
+}
+
+.sign-detail__step-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: $muted;
+    line-height: 1.5;
+}
+
+// ── Routes ─────────────────────────────────────────────
+.sign-detail__routes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sign-detail__route {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    background: $bg;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: $text;
+    line-height: 1.4;
+}
+
+.sign-detail__route-icon {
+    color: $green;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+// ── Context & culture ──────────────────────────────────
+.sign-detail__culture {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.sign-detail__culture-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.sign-detail__culture-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: $green-bg;
+    color: $green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.sign-detail__culture-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding-top: 2px;
+}
+
+.sign-detail__culture-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: $text;
+}
+
+.sign-detail__culture-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: $muted;
+    line-height: 1.5;
+}

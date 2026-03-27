@@ -1,0 +1,577 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
+
+:root {
+  --green: #3a7d44;
+  --green-light: #4a9e57;
+  --green-dark: #2d6035;
+  --bg: #f0f4f0;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --muted: #888888;
+  --border: #e0e0e0;
+  --input-bg: #f7f9f7;
+  --shadow-green: rgba(58, 125, 68, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: linear-gradient(135deg, #e8f0e9 0%, #d4e8d6 50%, #c8e0ca 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Phone Shell ─────────────────────────────────────── */
+.phone-shell {
+  width: 390px;
+  height: 844px;
+  background: #111;
+  border-radius: 52px;
+  padding: 12px;
+  box-shadow:
+    0 0 0 1px #2a2a2a,
+    0 50px 100px rgba(0, 0, 0, 0.45),
+    0 20px 40px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.phone-inner {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  border-radius: 42px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Side buttons */
+.phone-shell::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 140px;
+  width: 3px;
+  height: 36px;
+  background: #222;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 50px 0 #222, 0 100px 0 #222;
+}
+.phone-shell::after {
+  content: '';
+  position: absolute;
+  right: -3px;
+  top: 180px;
+  width: 3px;
+  height: 70px;
+  background: #222;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ─── Notch / Dynamic Island ──────────────────────────── */
+.notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 126px;
+  height: 34px;
+  background: #111;
+  border-radius: 0 0 22px 22px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.notch-camera {
+  width: 11px;
+  height: 11px;
+  background: #1a1a1a;
+  border-radius: 50%;
+  border: 1.5px solid #2a2a2a;
+}
+
+.notch-speaker {
+  width: 52px;
+  height: 5px;
+  background: #1a1a1a;
+  border-radius: 3px;
+}
+
+/* ─── Status Bar ──────────────────────────────────────── */
+.status-bar {
+  height: 50px;
+  padding: 28px 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  flex-shrink: 0;
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── Screen Wrapper ──────────────────────────────────── */
+.screen-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 32px;
+  scrollbar-width: none;
+}
+.screen-content::-webkit-scrollbar { display: none; }
+
+/* ─── Screen Transition ───────────────────────────────── */
+.screen-enter {
+  animation: slideIn 0.32s ease forwards;
+}
+.screen-exit {
+  animation: slideOut 0.32s ease forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(28px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slideOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-28px); }
+}
+
+/* ─── Typography ──────────────────────────────────────── */
+.greeting {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.greeting-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 30px;
+  color: var(--text);
+  margin-bottom: 28px;
+  line-height: 1.2;
+}
+
+.screen-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.screen-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.screen-subtitle span {
+  color: var(--green);
+  font-weight: 500;
+}
+
+/* ─── Inputs ──────────────────────────────────────────── */
+.input-group {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #b0b0b0;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 42px 14px 42px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.input-field:focus {
+  border-color: var(--green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(58, 125, 68, 0.1);
+}
+
+.input-field::placeholder {
+  color: #c0c0c0;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #b0b0b0;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.eye-btn:hover { color: var(--green); }
+
+/* ─── Checkbox ────────────────────────────────────────── */
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 22px;
+  margin-top: 4px;
+}
+
+.checkbox-row input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--green);
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.checkbox-row label {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+.checkbox-row label a {
+  color: var(--green);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* ─── Forgot Link ─────────────────────────────────────── */
+.forgot-link {
+  text-align: right;
+  margin-top: -4px;
+  margin-bottom: 20px;
+}
+
+.forgot-link button {
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.forgot-link button:hover { color: var(--green); }
+
+/* ─── Primary Button ──────────────────────────────────── */
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--green-light), var(--green-dark));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 8px 20px var(--shadow-green);
+  margin-bottom: 18px;
+  letter-spacing: 0.2px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px var(--shadow-green);
+}
+
+.btn-primary:active { transform: translateY(0); }
+
+/* ─── Or Divider ──────────────────────────────────────── */
+.or-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.or-divider div {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.or-divider span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ─── Social Buttons ──────────────────────────────────── */
+.social-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.social-btn {
+  width: 56px;
+  height: 56px;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.social-btn:hover {
+  border-color: var(--green);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+/* ─── Footer Text ─────────────────────────────────────── */
+.footer-text {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.footer-text button {
+  color: var(--green);
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.footer-text button:hover { text-decoration: underline; }
+
+/* ─── Back Button ─────────────────────────────────────── */
+.back-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: var(--text);
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.back-btn:hover {
+  background: var(--border);
+  border-color: #ccc;
+}
+
+/* ─── Illustration ────────────────────────────────────── */
+.illustration {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+/* ─── Step Dots ───────────────────────────────────────── */
+.step-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.step-dot {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border);
+  transition: all 0.35s ease;
+}
+
+.step-dot.active {
+  background: var(--green);
+  width: 22px !important;
+}
+
+/* ─── OTP Inputs ──────────────────────────────────────── */
+.otp-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.otp-input {
+  width: 62px;
+  height: 68px;
+  border: 1.5px solid #d0d0d0;
+  border-radius: 14px;
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--input-bg);
+  outline: none;
+  color: var(--text);
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.otp-input:focus {
+  border-color: var(--green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(58, 125, 68, 0.12);
+}
+
+/* ─── Spacer ──────────────────────────────────────────── */
+.spacer { flex: 1; }
+
+/* ─── Home Bar ────────────────────────────────────────── */
+.home-bar {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-bar-line {
+  width: 130px;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+/* ─── Responsive wrapper ──────────────────────────────── */
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 20px;
+}
+
+.nav-hint {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.4);
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ─── External Nav Dots ───────────────────────────────── */
+.ext-nav-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.ext-nav-dot {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.ext-nav-dot.active {
+  background: var(--green);
+  width: 26px !important;
+}
+
+/* ─── Success Screen ──────────────────────────────────── */
+.success-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.success-icon {
+  width: 88px;
+  height: 88px;
+  background: linear-gradient(135deg, var(--green-light), var(--green-dark));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 16px 36px var(--shadow-green);
+  animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.success-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: var(--text);
+}
+
+.success-desc {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 240px;
+  line-height: 1.6;
+}

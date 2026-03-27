@@ -1,0 +1,408 @@
+// route-map.scss — src/styles/
+
+$green: #1e6e2e;
+$green-mid: #2d6035;
+$blue: #1565C0;
+$text: #1a1a1a;
+$muted: #888;
+$white: #ffffff;
+$bg: #f7f8f8;
+$border: #efefef;
+
+$ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ── Root ───────────────────────────────────────────────
+.rmap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: inherit;
+    animation: rmapIn 0.35s $ease-expo both;
+}
+
+@keyframes rmapIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+// ── Map ────────────────────────────────────────────────
+// .rmap__map {
+//     position: absolute;
+//     inset: 0;
+//     background: #dde8d8;
+// }
+
+// .rmap__frame {
+//     width: 100%;
+//     height: 100%;
+//     border: none;
+//     transform: scale(1.06);
+//     transform-origin: center;
+//     pointer-events: none;
+//     overflow: auto;
+// }
+
+.rmap__map {
+    position: absolute;
+    inset: 0;
+    background: #dde8d8;
+    // pointer-events MUST be auto so touch/mouse reaches the iframe
+    pointer-events: auto;
+}
+
+.rmap__frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    transform: scale(1.06);
+    transform-origin: center center;
+    display: block;
+    // ← REMOVED: pointer-events: none
+    // The iframe now receives all touch and mouse events so OSM map is
+    // fully pannable and zoomable. UI elements (topbar, badge, sheet)
+    // sit above it at higher z-index so they still receive their own events.
+    pointer-events: auto;
+}
+
+.rmap__route {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+// ── Top bar ────────────────────────────────────────────
+.rmap__topbar {
+    position: absolute;
+    top: 52px;
+    left: 12px;
+    right: 12px;
+    background: $white;
+    border-radius: 14px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    animation: topIn 0.45s $ease-back 0.1s both;
+
+    z-index: 10;
+}
+
+@keyframes topIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rmap__topbar-close {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: $bg;
+    color: $text;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s;
+
+    &:hover {
+        background: #e0e0e0;
+    }
+}
+
+.rmap__topbar-route {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.rmap__topbar-loc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: $text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rmap__topbar-arrow {
+    color: $muted;
+    font-size: 10px;
+    flex-shrink: 0;
+}
+
+.rmap__topbar-edit {
+    background: none;
+    border: none;
+    color: $green;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+    transition: color 0.2s;
+
+    &:hover {
+        color: $green-mid;
+    }
+}
+
+// ── ETA badge ──────────────────────────────────────────
+.rmap__badge {
+    position: absolute;
+    top: 108px;
+    left: 14px;
+    background: $blue;
+    border-radius: 10px;
+    padding: 6px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: topIn 0.4s $ease-expo 0.2s both;
+
+    z-index: 10;
+}
+
+.rmap__badge-time {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: $white;
+}
+
+.rmap__badge-tag {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 4px;
+    padding: 1px 5px;
+
+    &--green {
+        background: $green;
+        color: $white;
+    }
+}
+
+// ── Bottom sheet ───────────────────────────────────────
+.rmap__sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: $white;
+    border-radius: 24px 24px 0 0;
+    padding: 10px 20px 28px;
+    box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.14);
+    // hidden below screen until sheetVisible is set
+    transform: translateY(100%);
+    transition: transform 0.5s $ease-expo;
+    min-height: 140px;
+
+    z-index: 10;
+
+    &--in {
+        transform: translateY(0);
+    }
+
+    &-handle {
+        width: 36px;
+        height: 4px;
+        background: #ddd;
+        border-radius: 2px;
+        margin: 0 auto 14px;
+    }
+
+    &-dismiss {
+        position: absolute;
+        top: 14px;
+        right: 16px;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        border: none;
+        background: $bg;
+        color: $muted;
+        font-size: 11px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+
+        &:hover {
+            background: #e0e0e0;
+        }
+    }
+}
+
+// ── Loading state ──────────────────────────────────────
+.rmap__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0 6px;
+}
+
+.rmap__spinner {
+    width: 38px;
+    height: 38px;
+    border: 3px solid #e0e0e0;
+    border-top-color: $green;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rmap__loading-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: $muted;
+}
+
+// ── Rank info card ─────────────────────────────────────
+.rmap__card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+
+    &--in {
+        animation: cardIn 0.4s $ease-back forwards;
+    }
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// ── Thumbnail: image fills the entire box ──────────────
+.rmap__card-thumb {
+    // Fixed size — matches the design mockup
+    width: 82px;
+    height: 82px;
+    border-radius: 14px;
+    overflow: hidden; // clips the image to the rounded rect
+    flex-shrink: 0;
+    background: #e8e8e8; // shown while image loads
+    position: relative;
+}
+
+// The image covers every pixel of the thumb — no gaps, no letterboxing
+.rmap__card-thumb-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // scales & crops to fill without distortion
+    object-position: center;
+    display: block;
+}
+
+// Fallback — only visible when image fails
+.rmap__card-thumb-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    color: #aaa;
+    font-size: 26px;
+}
+
+// ── Card info ──────────────────────────────────────────
+.rmap__card-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rmap__card-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: $text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rmap__card-address {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    line-height: 1.4;
+    display: flex;
+    gap: 4px;
+    align-items: flex-start;
+
+    i {
+        color: $green;
+        margin-top: 2px;
+        flex-shrink: 0;
+        font-size: 10px;
+    }
+}
+
+.rmap__card-cta {
+    margin-top: 6px;
+    padding: 7px 16px;
+    background: $green;
+    color: $white;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background 0.2s, transform 0.15s;
+
+    &:hover {
+        background: $green-mid;
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}

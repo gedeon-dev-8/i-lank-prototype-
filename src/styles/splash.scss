@@ -1,0 +1,163 @@
+// splash.scss — place in src/screens/ alongside SplashScreen.jsx
+// Uses the same variables as styles.scss for full consistency.
+
+// ── Local tokens (mirrors styles.scss) ────────────────────────
+$splash-green:   #1e6e2e;   // deep brand green for bg
+$splash-yellow:  #f5c518;   // pin / "i" accent
+$splash-white:   #ffffff;
+$splash-dark:    #1a1a1a;   // dark text on light panel
+$splash-muted:   #888888;
+
+// ── Easing curves ─────────────────────────────────────────────
+$ease-expo-out:  cubic-bezier(0.16, 1, 0.3, 1);   // snappy decelerate
+$ease-back-out:  cubic-bezier(0.34, 1.56, 0.64, 1); // slight overshoot
+
+// ═══════════════════════════════════════════════════════════════
+// Splash container
+// position:absolute + inset:0 so it sits on top of screen content
+// without touching the phone-shell dimensions at all.
+// ═══════════════════════════════════════════════════════════════
+.splash {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  overflow: hidden;
+  // inherit the phone-inner border-radius so corners stay rounded
+  border-radius: inherit;
+  pointer-events: none; // don't block underlying screen while exiting
+
+  // ── Exit phase ─────────────────────────────────────────────
+  &--exit {
+    animation: splashFadeOut 0.4s $ease-expo-out forwards;
+  }
+}
+
+@keyframes splashFadeOut {
+  from { opacity: 1;  transform: scale(1); }
+  to   { opacity: 0;  transform: scale(1.04); }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Panels — use clip-path for GPU-accelerated, jank-free wipe
+// ═══════════════════════════════════════════════════════════════
+.splash__panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // clip-path transition drives the wipe — will-change keeps it on GPU
+  will-change: clip-path;
+  transition: clip-path 0.72s $ease-expo-out;
+
+  // ── Green panel ──────────────────────────────────────────
+  &--green {
+    background: $splash-green;
+    z-index: 2; // on top initially
+
+    // dark  → full screen
+    .splash--dark &  { clip-path: inset(0 0%   0 0); }
+    // wipe  → shrink to left half
+    .splash--wipe &  { clip-path: inset(0 50%  0 0); }
+    // light → fully gone
+    .splash--light &,
+    .splash--exit &  { clip-path: inset(0 100% 0 0); }
+  }
+
+  // ── White panel ──────────────────────────────────────────
+  &--white {
+    background: $splash-white;
+    z-index: 1; // behind green initially
+
+    // dark  → hidden behind green
+    .splash--dark &  { clip-path: inset(0 0 0 100%); }
+    // wipe  → reveal from right half
+    .splash--wipe &  { clip-path: inset(0 0 0 50%);  }
+    // light → full screen
+    .splash--light &,
+    .splash--exit &  { clip-path: inset(0 0%  0 0);  }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Logo group
+// ═══════════════════════════════════════════════════════════════
+.splash__logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  // entrance animation on first render
+  animation: logoUp 0.65s $ease-back-out 0.15s both;
+}
+
+@keyframes logoUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// ── Pin icon ───────────────────────────────────────────────────
+.splash__pin {
+  margin-left: 1px;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.18));
+  animation: pinDrop 0.55s $ease-back-out 0.4s both;
+}
+
+@keyframes pinDrop {
+  from { opacity: 0; transform: translateY(-14px) scale(0.75); }
+  to   { opacity: 1; transform: translateY(0)      scale(1); }
+}
+
+// ── Wordmark ───────────────────────────────────────────────────
+.splash__wordmark {
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+  gap: 0;
+}
+
+.splash__i {
+  font-family: 'Poppins', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: $splash-yellow;
+  line-height: 1;
+}
+
+.splash__sep {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -1px;
+  margin: 0 3px;
+
+  // colour per panel
+  .splash__logo--light & { color: $splash-dark; }
+  .splash__panel--green & { color: rgba($splash-white, 0.9); }
+}
+
+.splash__lank {
+  font-family: 'Poppins', sans-serif;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  line-height: 1;
+
+  .splash__logo--light & { color: $splash-dark; }
+  .splash__panel--green & { color: $splash-white; }
+}
+
+// ── Tagline ────────────────────────────────────────────────────
+.splash__tagline {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  margin-top: 6px;
+
+  .splash__logo--light & { color: rgba($splash-dark, 0.55); }
+  .splash__panel--green & { color: rgba($splash-white, 0.75); }
+}

@@ -1,0 +1,525 @@
+// route-planner.scss — src/screens/
+@use "sass:color";
+
+$green:      #1e6e2e;
+$green-mid:  #2d6035;
+$green-bg:   #e8f5e9;
+$text:       #1a1a1a;
+$muted:      #999999;
+$border:     #f0f0f0;
+$input-bg:   #f7f8f8;
+$white:      #ffffff;
+
+$ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+$ease-back:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ═══════════════════════════════════════════════════════
+// Shared overlay
+// ═══════════════════════════════════════════════════════
+.rp-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.35s ease;
+  pointer-events: none;
+
+  &--in {
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// Search panel (phase 1)
+// ═══════════════════════════════════════════════════════
+.rp {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 44px;
+  background: $white;
+  border-radius: 24px 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(100%) scale(0.85);
+  transform-origin: bottom center;
+  opacity: 0;
+  transition: transform 0.42s $ease-expo, opacity 0.3s ease;
+
+  &--in {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+// ── Header ─────────────────────────────────────────────
+.rp__header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 20px 12px;
+  flex-shrink: 0;
+}
+
+.rp__close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: $input-bg;
+  color: $text;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  //&:hover { background: darken($input-bg, 4%); }
+  &:hover { background: color.adjust($input-bg, $lightness: -4%); }
+}
+
+.rp__title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: $text;
+  flex: 1;
+}
+
+// ── Input fields ───────────────────────────────────────
+.rp__inputs {
+  padding: 4px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.rp__field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: $input-bg;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  padding: 12px 12px 12px 14px;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+
+  &--active {
+    border-color: $green;
+    background: $white;
+    box-shadow: 0 0 0 3px rgba(30, 110, 46, 0.1);
+  }
+}
+
+.rp__field-icon {
+  color: #bbb;
+  font-size: 14px;
+  flex-shrink: 0;
+  .rp__field--active & { color: $green; }
+}
+
+.rp__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: $text;
+  &::placeholder { color: #bbb; }
+}
+
+.rp__field-action {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 2px 4px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+  &:hover { color: $green; }
+}
+
+.rp__swap-icon {
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+// ── Divider ────────────────────────────────────────────
+.rp__divider {
+  height: 1px;
+  background: $border;
+  margin: 14px 20px 4px;
+  flex-shrink: 0;
+}
+
+// ── Results list ───────────────────────────────────────
+.rp__list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 12px 24px;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.rp__result {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 8px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid $border;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 10px;
+  transition: background 0.15s;
+  opacity: 0;
+  animation: resultIn 0.35s $ease-expo forwards;
+
+  &:hover { background: #f9faf9; }
+  &:last-child { border-bottom: none; }
+}
+
+@keyframes resultIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rp__result-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $input-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #aaa;
+  font-size: 13px;
+}
+
+.rp__result-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rp__result-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rp__result-sub {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: $muted;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rp__result-km {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: $muted;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+// ═══════════════════════════════════════════════════════
+// Route results (phase 2)   .rr__*
+// ═══════════════════════════════════════════════════════
+.rr {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  animation: rrFadeIn 0.38s $ease-expo both;
+}
+
+@keyframes rrFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+// ── Map ────────────────────────────────────────────────
+.rr__map {
+  position: absolute;
+  inset: 0;
+  background: #dde8d8;
+
+  &-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    transform: scale(1.06);
+    transform-origin: center center;
+    pointer-events: none;
+  }
+}
+
+// Dashed SVG route line over the map
+.rr__route-line {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+// ── Top bar ────────────────────────────────────────────
+.rr__topbar {
+  position: absolute;
+  top: 52px; // below status bar
+  left: 12px;
+  right: 12px;
+  background: $white;
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  animation: topbarIn 0.45s $ease-back 0.1s both;
+}
+
+@keyframes topbarIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rr__topbar-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: $input-bg;
+  color: $text;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  &:hover { background: #e0e0e0; }
+}
+
+.rr__topbar-route {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.rr__topbar-loc {
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: $text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rr__topbar-arrow {
+  color: $muted;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+.rr__topbar-edit {
+  background: none;
+  border: none;
+  color: $green;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px;
+  flex-shrink: 0;
+  transition: color 0.2s;
+  &:hover { color: $green-mid; }
+}
+
+// ── Bottom sheet ───────────────────────────────────────
+.rr__sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $white;
+  border-radius: 24px 24px 0 0;
+  padding: 10px 16px 24px;
+  box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.14);
+  transform: translateY(100%);
+  transition: transform 0.5s $ease-expo;
+  max-height: 68%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  &--in {
+    transform: translateY(0);
+  }
+
+  &-handle {
+    width: 36px;
+    height: 4px;
+    background: #ddd;
+    border-radius: 2px;
+    margin: 0 auto 14px;
+    flex-shrink: 0;
+  }
+}
+
+// ── Rank cards ─────────────────────────────────────────
+.rr__ranks {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.rr__rank {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: $white;
+  border: 1.5px solid $border;
+  border-radius: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  opacity: 0;
+  animation: rankIn 0.38s $ease-expo forwards;
+  flex-shrink: 0;
+
+  &--selected {
+    border-color: $green;
+    background: $green-bg;
+    box-shadow: 0 0 0 3px rgba(30, 110, 46, 0.1);
+  }
+
+  &:hover:not(.rr__rank--selected) {
+    border-color: #ccc;
+    background: #fafafa;
+  }
+}
+
+@keyframes rankIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rr__rank-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f0f4f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../assets/svgs/rank-thumb-illustration.svg');
+}
+
+.rr__rank-pin {
+  font-size: 20px;
+  color: $green;
+}
+
+.rr__rank-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rr__rank-name {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rr__rank-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.rr__rank-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.rr__rank-km {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: $text;
+}
+
+.rr__rank-min {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  color: $muted;
+}
+
+// ── CTA button ─────────────────────────────────────────
+.rr__cta {
+  width: 100%;
+  margin-top: 14px;
+  padding: 15px;
+  background: $green;
+  color: $white;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(30, 110, 46, 0.35);
+  transition: background 0.2s, transform 0.15s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $green-mid;
+    transform: translateY(-1px);
+  }
+  &:active { transform: translateY(0); }
+}

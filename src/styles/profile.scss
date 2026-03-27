@@ -1,0 +1,355 @@
+// profile.scss — src/styles/
+
+$green: #1e6e2e;
+$green-mid: #2d6035;
+$text: #1a1a1a;
+$muted: #888888;
+$white: #ffffff;
+$bg: #f4f5f7;
+$border: #eeeeee;
+$red: #e03a2a;
+
+$status-bar-h: 50px;
+$ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+// ── Root ───────────────────────────────────────────────
+.pf {
+    position: absolute;
+    inset: 0;
+    background: $bg;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0;
+    z-index: 50; // above everything
+    transform: translateX(100%);
+    transition: transform 0.38s $ease-expo;
+
+    &--in {
+        transform: translateX(0);
+    }
+}
+
+// ── Status bar cover ───────────────────────────────────
+.pf__status-cover {
+    height: $status-bar-h;
+    background: $white;
+    flex-shrink: 0;
+}
+
+// ── Header ─────────────────────────────────────────────
+.pf__header {
+    display: flex;
+    align-items: center;
+    padding: 4px 20px 14px;
+    background: $white;
+    flex-shrink: 0;
+    border-bottom: 1px solid $border;
+}
+
+.pf__close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: $bg;
+    color: $text;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s;
+
+    &:hover {
+        background: darken($bg, 6%);
+    }
+}
+
+.pf__title {
+    flex: 1;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: $text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 8px;
+}
+
+.pf__header-spacer {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+// ── Scrollable body ────────────────────────────────────
+.pf__body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding: 16px 20px 0;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+// ── User card ──────────────────────────────────────────
+.pf__user-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: $white;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+.pf__avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #b06040 0%, #7040a0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .pf__avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+// .pf__avatar-inner {
+//     font-family: 'Poppins', sans-serif;
+//     font-size: 16px;
+//     font-weight: 700;
+//     color: $white;
+//     letter-spacing: 1px;
+// }
+
+.pf__user-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.pf__user-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: $text;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pf__user-email {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pf__edit-btn {
+    padding: 8px 20px;
+    background: $green;
+    color: $white;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+
+    &:hover {
+        background: $green-mid;
+    }
+}
+
+// ── Sections ───────────────────────────────────────────
+.pf__section {
+    margin-bottom: 20px;
+}
+
+.pf__section-title {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: $text;
+    margin-bottom: 10px;
+    padding-left: 4px;
+}
+
+.pf__section-card {
+    background: $white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+
+// ── Setting row ────────────────────────────────────────
+.pf__row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+
+    &--tappable {
+        cursor: pointer;
+        transition: background 0.15s;
+
+        &:hover {
+            background: #fafafa;
+        }
+    }
+}
+
+.pf__row-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #f0f8f1;
+    color: $green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.pf__row-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.pf__row-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: $text;
+}
+
+.pf__row-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+}
+
+.pf__row-arrow {
+    color: #ccc;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+// ── Divider ────────────────────────────────────────────
+.pf__divider {
+    height: 1px;
+    background: $border;
+    margin: 0 16px;
+}
+
+// ── Toggle ─────────────────────────────────────────────
+.pf__toggle {
+    width: 44px;
+    height: 26px;
+    border-radius: 13px;
+    border: none;
+    cursor: pointer;
+    background: #e0e0e0;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.25s;
+    padding: 0;
+
+    &--on {
+        background: $green;
+    }
+}
+
+.pf__toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: $white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    transition: left 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    .pf__toggle--on & {
+        left: 21px;
+    }
+}
+
+// ── Danger rows ────────────────────────────────────────
+.pf__danger-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 16px;
+    background: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.15s;
+
+    &:hover {
+        background: #fafafa;
+    }
+}
+
+.pf__danger-icon {
+    width: 32px !important;
+    height: 32px;
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center !important;
+    font-size: 14px;
+    flex-shrink: 0;
+
+    &--logout {
+        background: #fff3e0;
+        color: #e65100;
+    }
+
+    &--delete {
+        background: #fde8e8;
+        color: $red;
+    }
+}
+
+.pf__danger-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    &--logout {
+        color: #e65100;
+    }
+
+    &--delete {
+        color: $red;
+    }
+}

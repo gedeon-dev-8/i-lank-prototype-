@@ -1,0 +1,374 @@
+// guide.scss — src/styles/
+@use 'sass:color';
+
+$green: #1e6e2e;
+$green-mid: #2d6035;
+$green-bg: #e8f5e9;
+$green-lite: #f0f8f1;
+$yellow: #f5c518;
+$text: #1a1a1a;
+$muted: #888888;
+$white: #ffffff;
+$bg: #f4f5f7;
+$border: #eeeeee;
+
+$status-bar-h: 50px;
+$ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+$ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// ── Root — fills the Overlay wrapper completely, NO border-radius ──────────────
+// The Overlay wrapper in HomeScreen handles border-radius (top only).
+// Setting border-radius here would create the visible gap artifact.
+.guide {
+    position: absolute;
+    inset: 0;
+    background: $white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 0; // ← explicitly none
+    z-index: 30;
+    transform: translateX(100%);
+    transition: transform 0.42s $ease-expo;
+
+    &--in {
+        transform: translateX(0);
+    }
+}
+
+// ── Status bar cover ───────────────────────────────────
+.guide__status-cover {
+    height: $status-bar-h;
+    background: $white;
+    flex-shrink: 0;
+}
+
+// ── Header ─────────────────────────────────────────────
+// .guide__header {
+//     display: flex;
+//     align-items: center;
+//     gap: 14px;
+//     padding: 4px 20px 14px;
+//     background: $white;
+//     flex-shrink: 0;
+//     border-bottom: 1px solid $border;
+// }
+
+// .guide__close {
+//     width: 32px;
+//     height: 32px;
+//     border-radius: 50%;
+//     border: none;
+//     background: $bg;
+//     color: $text;
+//     font-size: 13px;
+//     cursor: pointer;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     flex-shrink: 0;
+//     transition: background 0.2s;
+
+//     &:hover {
+//         background: darken($bg, 6%);
+//     }
+// }
+
+// .guide__title {
+//     font-family: 'Poppins', sans-serif;
+//     font-size: 17px;
+//     font-weight: 700;
+//     color: $text;
+//     flex: 1;
+// }
+
+.guide__header {
+    display: flex;
+    align-items: center;
+    gap: 12px; // gap between button and title
+    padding: 4px 20px 14px;
+    background: #ffffff;
+    flex-shrink: 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.guide__close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f4f5f7;
+    color: #1a1a1a;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; // never shrink the button
+    transition: background 0.2s;
+
+    &:hover {
+        // background: darken(#f4f5f7, 6%);
+        background: color.scale(#f4f5f7, $lightness: -6%);
+    }
+}
+
+.guide__title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a1a;
+    // NO flex:1, NO text-align:center — title sits left, right next to button
+    margin: 0 auto 0 13%; //NB: this margin pushes the title right, creating space for the back button, while still allowing it to truncate with ellipsis if too long
+}
+
+// ── Scrollable body ────────────────────────────────────
+.guide__body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    padding: 16px 20px 0;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+// ── Featured card ──────────────────────────────────────
+.guide__featured-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: $white;
+    border: 1.5px solid $border;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.guide__featured-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: $green;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.guide__featured-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.guide__featured-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: $text;
+}
+
+.guide__featured-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    line-height: 1.4;
+}
+
+.guide__offline-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: $green;
+    color: $white;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+// ── Sections ───────────────────────────────────────────
+.guide__section {
+    margin-bottom: 20px;
+}
+
+.guide__section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: $text;
+    margin-bottom: 12px;
+}
+
+// ── Tip rows ───────────────────────────────────────────
+.guide__tip-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.guide__tip-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.guide__tip-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: $green-bg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.guide__tip-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 2px;
+}
+
+.guide__tip-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: $text;
+}
+
+.guide__tip-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    color: $muted;
+    line-height: 1.5;
+}
+
+// ── Hand signals grid ──────────────────────────────────
+.guide__signals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.guide__signal-card {
+    background: $green-lite;
+    border-radius: 14px;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.guide__signal-thumb {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.guide__hand-svg {
+    width: 72px;
+    height: 72px;
+}
+
+.guide__signal-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: $text;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.guide__signal-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px;
+    color: $muted;
+    text-align: center;
+    line-height: 1.3;
+}
+
+// ── Pro tip ────────────────────────────────────────────
+.guide__protip {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: $green-lite;
+    border: 1.5px solid $green-bg;
+    border-radius: 16px;
+    margin-bottom: 4px;
+}
+
+.guide__protip-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $green-bg;
+    color: $green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.guide__protip-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.guide__protip-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: $green;
+}
+
+.guide__protip-desc {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: $muted;
+    line-height: 1.5;
+}
+
+.guide__protip-close {
+    background: none;
+    border: none;
+    color: $muted;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 2px;
+    flex-shrink: 0;
+
+    &:hover {
+        color: $text;
+    }
+}
